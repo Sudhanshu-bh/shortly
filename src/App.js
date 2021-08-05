@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Main, Button, Flex, A, Box, Outer, BgImage, ShortenFlex, Input, IconCircle, Card, BoostOuter, FooterLogo, FooterHeading, FooterItem, Bar } from './components'
 import logo from './images/logo.svg'
 import logoWhite from './images/logo_white.svg'
@@ -7,22 +7,83 @@ import brIcon from './images/icon-brand-recognition.svg'
 import drIcon from './images/icon-detailed-records.svg'
 import fcIcon from './images/icon-fully-customizable.svg'
 import theme from './theme'
+import axios from './axios.js'
 
 function App() {
 
-  const { colors } = theme
+  const { colors } = theme;
+  let originalUrl = "";
+
+  const [linksArr, setlinksArr] = useState([])
   document.getElementsByTagName("body")[0].style.overflowX = "hidden";
 
   useEffect(() => {
     if (document.getElementById('shortenFlex')
-      && document.getElementById('cardsContainer')) {
+      && document.getElementById('cardsContainer')
+      && document.getElementById('bar')) {
       const shortenFlex = document.getElementById('shortenFlex')
       shortenFlex.style.top = `-${document.getElementById('shortenFlex').offsetHeight / 2}px`
 
       const bar = document.getElementById('bar')
       bar.style.top = `-${document.getElementById('cardsContainer').offsetHeight / 2 + 15}px`
     }
+
+    if (document.getElementById('linksContainer')
+      && document.getElementById('shortenFlex')) {
+      const shortenFlexHeight = document.getElementById('shortenFlex').offsetHeight;
+      const linksContainer = document.getElementById('linksContainer')
+      linksContainer.style.top = `-${shortenFlexHeight / 2}px`
+    }
   }, [])
+
+  useEffect(() => {
+    if (!localStorage.getItem('links')) {
+      setlinksArr([])
+    } else {
+      setlinksArr(JSON.parse(localStorage.getItem('links')))
+    }
+  }, [])
+
+  const handleChange = e => {
+    originalUrl = e.target.value;
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+
+    axios.get(`/shorten?url=${originalUrl}`)
+      .then(res => {
+        const newObj = {
+          origLink: res.data.result.original_link,
+          shareLink: res.data.result.full_short_link,
+        }
+
+        let links = [...linksArr, newObj]
+        setlinksArr([...linksArr, newObj])
+
+        localStorage.setItem('links', JSON.stringify(links))
+      })
+      .catch(err => {
+        console.log("Error while shortening URL: ", err)
+      })
+  }
+
+  const handleCopy = (e, i, shareLink) => {
+    navigator.clipboard.writeText(shareLink)
+      .then(() => {
+        const currentButton = document.getElementById(`copyButton${i}`)
+        currentButton.innerHTML = "Copied!";
+        currentButton.classList.toggle("copied");
+        currentButton.disabled = true
+
+        setTimeout(() => {
+          currentButton.innerHTML = "Copy";
+          currentButton.classList.toggle("copied")
+          currentButton.disabled = false
+        }, 2000)
+      })
+
+  }
 
   return (
     <Main>
@@ -62,10 +123,22 @@ function App() {
       <Outer mt="10.5rem" pt="0" pb="6rem" background="#eff1f7">
         <form id="shortenForm">
           <ShortenFlex id="shortenFlex" mt="0rem" width="100%">
-            <Input type="text" name="originalUrl" placeholder="Shorten a link here..." />
-            <Button type="submit" ml="1.2rem" borderRadius="10px">Shorten it!</Button>
+            <Input type="text" onChange={handleChange} placeholder="Shorten a link here..." />
+            <Button type="submit" onClick={handleSubmit} ml="1.2rem" borderRadius="10px">Shorten it!</Button>
           </ShortenFlex>
         </form>
+
+        <Box id="linksContainer" position="relative">
+          {
+            linksArr?.map((link, i) => (
+              <Flex className="links" key={i}>
+                <Box color={colors.VeryDarkBlue} flex={1}>{link.origLink.substr(0, 50)}{link.origLink.length > 50 && '...'}</Box>
+                <Box color={colors.Cyan}>{link.shareLink}</Box>
+                <Button className="small copy" id={`copyButton${i}`} onClick={(e) => handleCopy(e, i, link.shareLink)}>Copy</Button>
+              </Flex>
+            ))
+          }
+        </Box>
 
         <Flex flexDirection="column" alignItems="center">
           <Box width="50%" >

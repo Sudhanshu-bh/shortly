@@ -31,10 +31,22 @@ export const Box = styled.div`
   ${color}
   ${typography}
   ${border}
+  ${position}
+  ${flexbox}
 `
 
 export const Flex = styled(Box)`
   display: flex;
+
+  &.links {
+    align-items: center;
+    background-color: white;
+    font-size: 1.1rem;
+    padding: 1rem 1.3rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+  }
+
   ${flexbox}
 `
 
@@ -73,6 +85,22 @@ export const Button = styled.button`
   &.small {
     font-size: 1rem;
     padding: 0.5rem 1.6rem;
+  }
+
+  &.copy {
+    border-radius: 5px;
+    margin-left: 1.5rem;
+    padding-left: 0;
+    padding-right: 0;
+    width: 6rem;
+  }
+
+  &.copy.copied {
+    background-color: ${colors.DarkViolet};
+  }
+
+  &:disabled {
+    cursor: default;
   }
 
   &:hover {
