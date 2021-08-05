@@ -48,6 +48,10 @@ export const A = styled.a`
     color: black;
   }
 
+  &.footerIcon:hover svg path {
+    fill: ${colors.DarkCyan};
+  }
+
   ${color}
   ${space}
   ${flexbox}
@@ -65,6 +69,11 @@ export const Button = styled.button`
   font-weight: 700;
   border-radius: 100px;
   cursor: pointer;
+
+  &.small {
+    font-size: 1rem;
+    padding: 0.5rem 1.6rem;
+  }
 
   &:hover {
     background-color: ${colors.Cyan};
@@ -99,15 +108,22 @@ export const ShortenFlex = styled(Flex)`
 
 export const Input = styled.input`
   flex: 1;
-  padding: 1rem 1.5rem;
+  padding: 0.9rem 1.5rem;
   font-size: 1.1rem;
-  border: none;
+  border-style: solid;
+  border-width: 3px;
+  border-color: transparent;
   border-radius: 10px;
+  outline: none;
+
+  &:focus {
+    border: 3px solid ${colors.Cyan};
+  }
 `
 
 export const IconCircle = styled(Flex)`
   position: relative;
-  z-index: 1;
+  z-index: 3;
   margin-bottom: -2.5rem;
   left: 1.5rem;
   height: 5rem;
@@ -122,7 +138,22 @@ export const Card = styled(Box)`
   background-color: white;
   padding: 3.3rem 1.5rem 2rem 1.5rem;
   color: ${colors.GrayishViolet};
+  border-radius: 5px;
   font-size: 0.9rem;
+  line-height: 1.5rem;
+  z-index: 2;
+
+  & h3 {
+    font-size: 1.1rem;
+  }
+`
+
+export const Bar = styled.div`
+  height: 8px;
+  width: 100%;
+  background-color: ${colors.Cyan};
+  position: relative;
+  z-index: 1;
 `
 
 export const BoostOuter = styled(Outer)`
@@ -153,8 +184,13 @@ export const FooterHeading = styled.div`
 
 export const FooterItem = styled.a`
   margin-bottom: 0.5rem;
+  width: fit-content;
   color: ${colors.GrayishViolet};
   text-decoration: none;
+
+  &:hover {
+    color: ${colors.DarkCyan}
+  }
 `
 
 export const Img = styled.img`
