@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import theme from './theme'
 import { color, flexbox, layout, position, space, typography, border, background } from 'styled-system'
 import shortenDesktop from './images/bg-shorten-desktop.svg'
+import desktopBoost from './images/bg-boost-desktop.svg'
 
 const { colors } = theme
 
@@ -14,9 +15,14 @@ export const Main = styled.main`
 
 export const Outer = styled.div`
   padding: 2.5rem 9rem;
+  display: flex;
+  flex-direction: column;
 
   ${background}
   ${space}
+  ${flexbox}
+  ${color}
+  ${typography}
 `
 
 export const Box = styled.div`
@@ -24,6 +30,7 @@ export const Box = styled.div`
   ${layout}
   ${color}
   ${typography}
+  ${border}
 `
 
 export const Flex = styled(Box)`
@@ -57,6 +64,7 @@ export const Button = styled.button`
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   border-radius: 100px;
+  cursor: pointer;
 
   &:hover {
     background-color: ${colors.Cyan};
@@ -95,4 +103,60 @@ export const Input = styled.input`
   font-size: 1.1rem;
   border: none;
   border-radius: 10px;
+`
+
+export const IconCircle = styled(Flex)`
+  position: relative;
+  z-index: 1;
+  margin-bottom: -2.5rem;
+  left: 1.5rem;
+  height: 5rem;
+  width: 5rem;
+  background-color: ${colors.DarkViolet};
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+`
+
+export const Card = styled(Box)`
+  background-color: white;
+  padding: 3.3rem 1.5rem 2rem 1.5rem;
+  color: ${colors.GrayishViolet};
+  font-size: 0.9rem;
+`
+
+export const BoostOuter = styled(Outer)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+
+  @media (min-width: 480px) {
+    background-image: url(${desktopBoost});
+    background-color: ${colors.DarkViolet};
+    background-size: cover;
+  }
+`
+
+export const FooterLogo = styled.img`
+  display: flex;
+  justify-content: flex-start;
+  height: 2rem;
+  object-fit: contain;
+`
+
+export const FooterHeading = styled.div`
+  font-weight: 700;
+  margin-bottom: 1.1rem;
+`
+
+export const FooterItem = styled.a`
+  margin-bottom: 0.5rem;
+  color: ${colors.GrayishViolet};
+  text-decoration: none;
+`
+
+export const Img = styled.img`
+  ${space}
 `
