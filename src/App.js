@@ -15,6 +15,7 @@ function App() {
   let originalUrl = "";
 
   const [linksArr, setlinksArr] = useState([])
+  const [emptyUrl, setemptyUrl] = useState(false)
   document.getElementsByTagName("body")[0].style.overflowX = "hidden";
 
   useEffect(() => {
@@ -45,11 +46,17 @@ function App() {
   }, [])
 
   const handleChange = e => {
+    setemptyUrl(false)
     originalUrl = e.target.value;
   }
 
   const handleSubmit = e => {
     e.preventDefault()
+
+    if (originalUrl === "") {
+      setemptyUrl(true)
+      return;
+    }
 
     axios.get(`/shorten?url=${originalUrl}`)
       .then(res => {
@@ -82,7 +89,6 @@ function App() {
           currentButton.disabled = false
         }, 2000)
       })
-
   }
 
   return (
@@ -123,8 +129,14 @@ function App() {
       <Outer mt="10.5rem" pt="0" pb="6rem" background="#eff1f7">
         <form id="shortenForm">
           <ShortenFlex id="shortenFlex" mt="0rem" width="100%">
-            <Input type="text" onChange={handleChange} placeholder="Shorten a link here..." />
-            <Button type="submit" onClick={handleSubmit} ml="1.2rem" borderRadius="10px">Shorten it!</Button>
+            <Flex>
+              <Input type="text" onChange={handleChange}
+                className={`${emptyUrl === true && "emptyUrl"}`}
+                placeholder="Shorten a link here..."
+              />
+              <Button type="submit" onClick={handleSubmit} ml="1.2rem" borderRadius="10px">Shorten it!</Button>
+            </Flex>
+            <Box className="emptyUrl">{emptyUrl === true && "Please add a link"}</Box>
           </ShortenFlex>
         </form>
 

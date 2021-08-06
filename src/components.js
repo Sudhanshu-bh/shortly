@@ -26,6 +26,16 @@ export const Outer = styled.div`
 `
 
 export const Box = styled.div`
+
+  &.emptyUrl {
+    height: 0;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: ${colors.Red};
+    font-style: italic;
+    font-weight: 500;
+  }
+
   ${space}
   ${layout}
   ${color}
@@ -93,10 +103,9 @@ export const Button = styled.button`
     padding-left: 0;
     padding-right: 0;
     width: 6rem;
-  }
-
-  &.copy.copied {
-    background-color: ${colors.DarkViolet};
+    &.copied {
+      background-color: ${colors.DarkViolet};
+    }
   }
 
   &:disabled {
@@ -120,6 +129,7 @@ export const BgImage = styled.img`
 `
 
 export const ShortenFlex = styled(Flex)`
+  flex-direction: column;
   background-color: ${colors.DarkViolet};
   padding: 2.8rem 3rem;
   border-radius: 10px;
@@ -146,6 +156,18 @@ export const Input = styled.input`
 
   &:focus {
     border: 3px solid ${colors.Cyan};
+  }
+
+  &.emptyUrl {
+    border: 3px solid ${colors.Red};
+
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: red;
+      opacity: 0.5;
+    }
+    ::-ms-input-placeholder { /* Microsoft Edge */
+      color: red;
+    }
   }
 `
 
