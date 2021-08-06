@@ -17,6 +17,7 @@ function App() {
   const [dropdown, setdropdown] = useState(false)
   const [linksArr, setlinksArr] = useState([])
   const [emptyUrl, setemptyUrl] = useState(false)
+  const [buttonText, setbuttonText] = useState("Shorten it!")
   document.getElementsByTagName("body")[0].style.overflowX = "hidden";
 
   useEffect(() => {
@@ -59,13 +60,20 @@ function App() {
   const handleSubmit = e => {
     e.preventDefault()
 
-    if (originalUrl === "") {
+    if (originalUrl.length === 0) {
       setemptyUrl(true)
       return;
     }
 
+    setbuttonText("Shortening...");
+    e.target.disabled = true;
+
     axios.get(`/shorten?url=${originalUrl}`)
       .then(res => {
+        setbuttonText("Shorten it!");
+        e.target.disabled = false;
+
+        document.getElementById("shortenForm").reset();
         const newObj = {
           origLink: res.data.result.original_link,
           shareLink: res.data.result.full_short_link,
@@ -77,6 +85,10 @@ function App() {
         localStorage.setItem('links', JSON.stringify(links))
       })
       .catch(err => {
+        setbuttonText("Shorten it!");
+        e.target.disabled = false;
+        document.getElementById("shortenForm").reset();
+
         console.log("Error while shortening URL: ", err)
       })
   }
@@ -153,7 +165,7 @@ function App() {
               />
               <Box className="emptyUrl">{emptyUrl === true && "Please add a link"}</Box>
             </Flex>
-            <Button className={`shorten ${emptyUrl === true && "mTop"}`} type="submit" onClick={handleSubmit} ml="1.2rem" borderRadius="10px">Shorten it!</Button>
+            <Button className={`shorten ${emptyUrl === true && "mTop"}`} type="submit" onClick={handleSubmit} ml="1.2rem" borderRadius="10px">{buttonText}</Button>
           </ShortenFlex>
         </form>
 

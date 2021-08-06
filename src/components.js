@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import theme from './theme'
 import { color, flexbox, layout, position, space, typography, border, background } from 'styled-system'
 import shortenDesktop from './images/bg-shorten-desktop.svg'
+import shortenMobile from './images/bg-shorten-mobile.svg'
 import desktopBoost from './images/bg-boost-desktop.svg'
 import mobileBoost from './images/bg-boost-mobile.svg'
 
@@ -184,7 +185,6 @@ export const Flex = styled(Box)`
     }
 
     @media screen and (max-width: 379px) {
-      /* display: none; */
       display: flex;
       flex-direction: column;
 
@@ -281,6 +281,9 @@ export const Button = styled.button`
   }
 
   &.shorten {
+    &:disabled {
+      background-color: ${colors.Cyan};
+    }
     @media screen and (max-width: 480px) {
       margin: 1rem 0 0 0;
       &.mTop {
@@ -339,10 +342,14 @@ export const ShortenFlex = styled(Flex)`
   }
   @media screen and (min-width: 480px) {
     background-image: url(${shortenDesktop});
-    background-position: -5rem 0;
+    background-size: cover;
   }
   
   @media screen and (max-width: 480px) {
+    background-image: url(${shortenMobile});
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 5.5rem -2.5rem; 
     flex-direction: column;
     padding: 1.5rem;
   }
