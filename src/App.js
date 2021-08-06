@@ -14,6 +14,7 @@ function App() {
   const { colors } = theme;
   let originalUrl = "";
 
+  const [dropdown, setdropdown] = useState(false)
   const [linksArr, setlinksArr] = useState([])
   const [emptyUrl, setemptyUrl] = useState(false)
   document.getElementsByTagName("body")[0].style.overflowX = "hidden";
@@ -26,7 +27,12 @@ function App() {
       shortenFlex.style.top = `-${document.getElementById('shortenFlex').offsetHeight / 2}px`
 
       const bar = document.getElementById('bar')
-      bar.style.top = `-${document.getElementById('cardsContainer').offsetHeight / 2 + 15}px`
+      if (window.innerWidth < 480) {
+        bar.style.height = `${document.getElementById('cardsContainer').offsetHeight}px`
+        bar.style.marginTop = `-${document.getElementById('cardsContainer').offsetHeight}px`
+      } else {
+        bar.style.top = `-${document.getElementById('cardsContainer').offsetHeight / 2 + 15}px`
+      }
     }
 
     if (document.getElementById('linksContainer')
@@ -92,33 +98,44 @@ function App() {
   }
 
   return (
-    <Main>
+    <Main overflowX="hidden">
       <Outer>
-        <Flex justifyContent="space-between">
-          <Flex alignItems="center">
+        <Flex className="header">
+          <Flex alignItems="center" className="logoPlusMenuIcon">
             <A href="/" mr="2rem" verticalAlign="bottom" position="relative" top="3px">
               <Flex>
                 <img src={logo} alt="logo" />
               </Flex>
             </A>
-            <A href="/#" mx="1rem">Features</A>
-            <A href="/#" mx="1rem">Pricing</A>
-            <A href="/#" mx="1rem">Resources</A>
+            <Box className="menuIcon" onClick={() => dropdown ? setdropdown(false) : setdropdown(true)}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill={colors.GrayishViolet} className="bi bi-list" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+              </svg>
+            </Box>
           </Flex>
-          <Box>
-            <A href="/#" mx="1rem">Login</A>
-            <A href="/#"><Button className="small" ml="1rem">Signup</Button></A>
-          </Box>
+          <Flex className={`navLinksOuter ${dropdown === true && "visible"}`} justifyContent="space-between" flex="1">
+            <Flex className="navLinks" flex="1">
+              <Flex>
+                <A href="/#" mx="1rem">Features</A>
+                <A href="/#" mx="1rem">Pricing</A>
+                <A href="/#" mx="1rem" className="resLink">Resources</A>
+              </Flex>
+              <Flex alignItems="center">
+                <A href="/#" mx="1rem" className="loginLink">Login</A>
+                <A href="/#" className="signupLink"><Button className="small" ml="1rem">Signup</Button></A>
+              </Flex>
+            </Flex>
+          </Flex>
         </Flex>
 
         <Box>
           <BgImage src={bg} alt="background" />
 
-          <Box mt="8rem" width="55%">
-            <Box fontSize="4rem" fontWeight="700" color={colors.VeryDarkBlue} lineHeight="1.15">
+          <Box className="intro" mt="8rem" width="55%">
+            <Box className="introHeading" fontSize="4rem" fontWeight="700" color={colors.VeryDarkBlue} lineHeight="1.15">
               More than just shorter links
             </Box>
-            <Box fontSize="1.25rem" color={colors.GrayishViolet}>
+            <Box className="introDesc" fontSize="1.25rem" color={colors.GrayishViolet}>
               Build your brand's recognition and get detailed insights on how your links are performing.
             </Box>
             <Button mt="2rem">Get Started</Button>
@@ -126,17 +143,17 @@ function App() {
         </Box>
       </Outer>
 
-      <Outer mt="10.5rem" pt="0" pb="6rem" background="#eff1f7">
+      <Outer className="secOuter" mt="10.5rem" pt="0" pb="6rem" background="#eff1f7">
         <form id="shortenForm">
           <ShortenFlex id="shortenFlex" mt="0rem" width="100%">
-            <Flex>
+            <Flex flex="1">
               <Input type="text" onChange={handleChange}
                 className={`${emptyUrl === true && "emptyUrl"}`}
                 placeholder="Shorten a link here..."
               />
-              <Button type="submit" onClick={handleSubmit} ml="1.2rem" borderRadius="10px">Shorten it!</Button>
+              <Box className="emptyUrl">{emptyUrl === true && "Please add a link"}</Box>
             </Flex>
-            <Box className="emptyUrl">{emptyUrl === true && "Please add a link"}</Box>
+            <Button className={`shorten ${emptyUrl === true && "mTop"}`} type="submit" onClick={handleSubmit} ml="1.2rem" borderRadius="10px">Shorten it!</Button>
           </ShortenFlex>
         </form>
 
@@ -145,22 +162,24 @@ function App() {
             linksArr?.map((link, i) => (
               <Flex className="links" key={i}>
                 <Box color={colors.VeryDarkBlue} flex={1}>{link.origLink.substr(0, 50)}{link.origLink.length > 50 && '...'}</Box>
-                <Box color={colors.Cyan}>{link.shareLink}</Box>
-                <Button className="small copy" id={`copyButton${i}`} onClick={(e) => handleCopy(e, i, link.shareLink)}>Copy</Button>
+                <Flex className="shareLinkPlusCopy" alignItems="center">
+                  <Box color={colors.Cyan}>{link.shareLink}</Box>
+                  <Button className="small copy" id={`copyButton${i}`} onClick={(e) => handleCopy(e, i, link.shareLink)}>Copy</Button>
+                </Flex>
               </Flex>
             ))
           }
         </Box>
 
         <Flex flexDirection="column" alignItems="center">
-          <Box width="50%" >
+          <Box className="advancedSt" width="50%">
             <Box mt="1.5rem" fontSize="2.1rem" fontWeight="700" lineHeight="4.5rem" color={colors.VeryDarkBlue} textAlign="center">Advanced Statistics</Box>
             <Box color={colors.GrayishViolet} textAlign="center">Track how your links are performing across the web with out advanced statistics dashboard.</Box>
           </Box>
         </Flex>
 
         <Flex mt="5.5rem" flexDirection="column">
-          <Flex id="cardsContainer">
+          <Flex className="cardsContainer" id="cardsContainer">
             <Flex flexDirection="column" mr="1.6rem" mt="-2.5rem">
               <IconCircle>
                 <img src={brIcon} alt="icon" />
@@ -202,7 +221,7 @@ function App() {
         <A href="/#"><Button>Get Started</Button></A>
       </BoostOuter>
 
-      <Outer flexDirection="row" backgroundColor={colors.VeryDarkViolet} color="white" fontSize="0.9rem" py="4rem">
+      <Outer className="footer" flexDirection="row" backgroundColor={colors.VeryDarkViolet} color="white" fontSize="0.9rem" py="4rem">
         <FooterLogo src={logoWhite} alt="logo" />
 
         <Flex flex='1'></Flex>
@@ -229,7 +248,7 @@ function App() {
           <FooterItem href="/#">Contact</FooterItem>
         </Flex>
 
-        <Flex alignItems="flex-start">
+        <Flex className="footerIcons" alignItems="flex-start">
           <A href="/#" mr="1.1rem" className="footerIcon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
               <path fill="#FFF" d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z" />

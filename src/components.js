@@ -3,6 +3,7 @@ import theme from './theme'
 import { color, flexbox, layout, position, space, typography, border, background } from 'styled-system'
 import shortenDesktop from './images/bg-shorten-desktop.svg'
 import desktopBoost from './images/bg-boost-desktop.svg'
+import mobileBoost from './images/bg-boost-mobile.svg'
 
 const { colors } = theme
 
@@ -18,6 +19,34 @@ export const Outer = styled.div`
   display: flex;
   flex-direction: column;
 
+  @media screen and (max-width: 480px) {
+    padding: 1.5rem 1rem;
+    &.secOuter {
+      margin-top: 9rem;
+      padding-top: 0;
+      padding-bottom: 5rem;
+    }
+    &.footer {
+      flex-direction: column;
+      padding: 3.5rem 0;
+      &>div {
+        align-items: center;
+        width: 100%;
+        margin-top: 1.8rem;
+      }
+      &>div:first-of-type {
+        margin-top: 0.5rem;
+      }
+      .footerIcons {
+        margin-top: 2.2rem;
+        justify-content: center;
+        a:not(:last-of-type) {
+          margin-right: 1.2rem;
+        }
+      }
+    }
+  }
+
   ${background}
   ${space}
   ${flexbox}
@@ -27,13 +56,48 @@ export const Outer = styled.div`
 
 export const Box = styled.div`
 
+  &.menuIcon {
+    @media screen and (min-width: 480px) {
+      display: none;
+    }
+    svg {
+      vertical-align: middle;
+    }
+  }
+
+  &.intro {
+    @media screen and (max-width: 480px) {
+      width: 100%;
+      margin-top: 1rem;
+      text-align: center;
+      .introHeading {
+        font-size: 2.5rem;
+      }
+      .introDesc {
+        font-size: 1.1rem;
+        margin-top: 1rem;
+      }
+    }
+  }
+
   &.emptyUrl {
     height: 0;
-    margin-top: 0.5rem;
+    position: relative;
+    top: 0.4rem;
     font-size: 0.9rem;
     color: ${colors.Red};
     font-style: italic;
     font-weight: 500;
+  }
+
+  &.advancedSt {
+    @media screen and (max-width: 480px) {
+      width: 100%;
+      margin-top: -3rem;
+      div:first-of-type {
+        font-size: 1.7rem;
+      }
+    }
   }
 
   ${space}
@@ -48,6 +112,88 @@ export const Box = styled.div`
 export const Flex = styled(Box)`
   display: flex;
 
+  &.header {
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+      flex: 1;
+
+      .logoPlusMenuIcon {
+        justify-content: space-between;
+      }
+    }
+  }
+
+  &.navLinksOuter {
+    @media screen and (max-width: 480px) {
+      display: flex;
+      opacity: 0;
+      max-height: 0;
+      position: relative;
+      z-index: -5;
+
+      &.visible {
+        z-index: 5;
+        opacity: 1;
+        transition: opacity 0.4s;
+      }
+
+      .navLinks {
+        margin-top: 1rem;
+        flex-direction: column;
+        height: fit-content;
+        background: ${colors.DarkViolet};
+        border-radius: 10px;
+        padding: 1rem;
+        div {
+          flex-direction: column;
+          align-items: center;
+          a {
+            box-sizing: border-box;
+            text-align: center;
+            width: 100%;
+            margin: 1rem;
+            color: white;
+            &.resLink {
+              margin-bottom: 1.5rem;
+            }
+            &.loginLink {
+              margin-top: 1.5rem;
+            }
+            &.signupLink {
+              margin-top: 0.5rem;
+            }
+            button {
+              margin-left: 0;
+              padding-top: 1rem;
+              padding-bottom: 1rem;
+              width: 100%;
+            }
+          }
+        }
+        div:first-of-type {
+          border-bottom: 1px solid ${colors.GrayishViolet};
+        }
+      }
+    }
+  }
+
+  &.navLinks {
+    @media screen and (min-width: 480px) {
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @media screen and (max-width: 379px) {
+      /* display: none; */
+      display: flex;
+      flex-direction: column;
+
+      &.open {
+        display: flex;
+      }
+    }
+  }
+
   &.links {
     align-items: center;
     background-color: white;
@@ -55,6 +201,43 @@ export const Flex = styled(Box)`
     padding: 1rem 1.3rem;
     border-radius: 5px;
     margin-top: 1rem;
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+      padding: 0;
+      &>div:first-of-type {
+        color: ${colors.DarkViolet};
+        border-bottom: 2px solid #eff1f7;
+        width: 100%;
+        padding: 0.8rem;
+        box-sizing: border-box;
+      }
+      .shareLinkPlusCopy {
+        flex-direction: column;
+        width: 100%;
+        padding: 1rem;
+        align-items: flex-start;
+        box-sizing: border-box;
+        button {
+          margin: 1rem 0 0 0;
+          width: 100%;
+          padding: 0.7rem 0;
+        }
+      }
+    }
+  }
+
+  &.cardsContainer {
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+      width: 100%;
+      text-align: center;
+      &>div {
+        margin: 0;
+        &:not(:first-of-type) {
+          margin-top: 3rem;
+        }
+      }
+    }
   }
 
   ${flexbox}
@@ -97,6 +280,15 @@ export const Button = styled.button`
     padding: 0.5rem 1.6rem;
   }
 
+  &.shorten {
+    @media screen and (max-width: 480px) {
+      margin: 1rem 0 0 0;
+      &.mTop {
+        margin-top: 2.5rem;
+      }
+    }
+  }
+
   &.copy {
     border-radius: 5px;
     margin-left: 1.5rem;
@@ -126,19 +318,33 @@ export const BgImage = styled.img`
   top: 8rem;
   right: -7rem;
   transform: scale(0.9);
+
+  @media screen and (max-width: 480px) {
+    position: relative;
+    z-index: 0;
+    height: 23rem;
+    top: 0;
+    left: -2rem;
+  }
 `
 
 export const ShortenFlex = styled(Flex)`
-  flex-direction: column;
   background-color: ${colors.DarkViolet};
   padding: 2.8rem 3rem;
   border-radius: 10px;
   box-sizing: border-box;
   position: relative;
-
+  div:first-of-type {
+    flex-direction: column;
+  }
   @media screen and (min-width: 480px) {
     background-image: url(${shortenDesktop});
     background-position: -5rem 0;
+  }
+  
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    padding: 1.5rem;
   }
 
   ${space}
@@ -153,6 +359,9 @@ export const Input = styled.input`
   border-color: transparent;
   border-radius: 10px;
   outline: none;
+  @media screen and (max-width: 480px) {
+    padding: 0.8rem 1rem;
+  }
 
   &:focus {
     border: 3px solid ${colors.Cyan};
@@ -182,6 +391,10 @@ export const IconCircle = styled(Flex)`
   align-items: center;
   justify-content: center;
   border-radius: 100px;
+
+  @media screen and (max-width: 480px) {
+    left: calc(50% - 2.5rem);
+  }
 `
 
 export const Card = styled(Box)`
@@ -204,6 +417,12 @@ export const Bar = styled.div`
   background-color: ${colors.Cyan};
   position: relative;
   z-index: 1;
+
+  @media screen and (max-width: 480px) {
+    z-index: 1;
+    width: 8px;
+    margin-left: calc(50vw - 4px - 1rem);
+  }
 `
 
 export const BoostOuter = styled(Outer)`
@@ -212,11 +431,20 @@ export const BoostOuter = styled(Outer)`
   align-items: center;
   justify-content: center;
   color: white;
+  background-color: ${colors.DarkViolet};
 
   @media (min-width: 480px) {
     background-image: url(${desktopBoost});
-    background-color: ${colors.DarkViolet};
     background-size: cover;
+  }
+  @media (max-width: 480px) {
+    background-image: url(${mobileBoost});
+    padding: 5.5rem 0 5.5rem 0;
+    background-size: cover;
+
+    h1 {
+      font-size: 1.5rem;
+    }
   }
 `
 
